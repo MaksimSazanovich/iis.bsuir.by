@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Справки и пропуски</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f4f4f4;
+            color: #333;
+        }
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #2c3e50;
+            color: white;
+            padding: 10px;
+        }
+        .icons span {
+            margin-left: 10px;
+            cursor: pointer;
+        }
+        main {
+            padding: 15px;
+        }
+        section {
+            background: white;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        button {
+            background: #2980b9;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 10px;
+            text-align: center;
+        }
+        footer {
+            text-align: center;
+            padding: 10px;
+            background: #2c3e50;
+            color: white;
+        }
+        #admin-panel {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            padding: 15px;
+            border-top: 2px solid #ccc;
+            box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+        }
+        #admin-panel input {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <button id="menu-btn">☰</button>
+        <h1>Пропуски</h1>
+        <div class="icons">
+            <span>🔔</span>
+            <span>👤</span>
+        </div>
+    </header>
+    
+    <main>
+        <section class="requests">
+            <h2>Заявления по ОРВИ</h2>
+            <button id="apply-btn">Подать заявку</button>
+        </section>
+        
+        <section class="missed-hours">
+            <h2>Пропуски по неуважительной причине</h2>
+            <p>Всего за семестр: <span id="total-hours">0</span> ч.</p>
+            <table>
+                <tr>
+                    <th>Февраль</th>
+                    <th>Март</th>
+                    <th>Апрель</th>
+                </tr>
+                <tr>
+                    <td>4 ч.</td>
+                    <td>0 ч.</td>
+                    <td>0 ч.</td>
+                </tr>
+            </table>
+        </section>
+        
+        <section class="documents">
+            <h2>Информация о справках</h2>
+            <div id="docs-list"></div>
+        </section>
+    </main>
+    
+    <footer>
+        <p>© 2025 Университет. Все права защищены.</p>
+    </footer>
+    
+    <div id="admin-panel">
+        <h3>Добавить справку</h3>
+        <input type="text" id="doc-type" placeholder="Тип документа">
+        <input type="date" id="doc-start">
+        <input type="date" id="doc-end">
+        <input type="text" id="doc-notes" placeholder="Примечания">
+        <button id="add-doc">Добавить</button>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
