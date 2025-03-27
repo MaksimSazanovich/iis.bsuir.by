@@ -1,191 +1,95 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Справки и пропуски</title>
-    <link rel="stylesheet" href="styles.css">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background: #f4f4f4;
-            color: #333;
-        }
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: #2c3e50;
-            color: white;
-            padding: 10px;
-        }
-        .icons span {
-            margin-left: 10px;
-            cursor: pointer;
-        }
-        main {
-            padding: 15px;
-        }
-        section {
-            background: white;
-            padding: 15px;
-            margin-bottom: 15px;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-        button {
-            background: #2980b9;
-            color: white;
-            border: none;
-            padding: 10px;
-            border-radius: 5px;
-            cursor: pointer;
-            width: 100%;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        table, th, td {
-            border: 1px solid #ddd;
-        }
-        th, td {
-            padding: 10px;
-            text-align: center;
-        }
-        footer {
-            text-align: center;
-            padding: 10px;
-            background: #2c3e50;
-            color: white;
-        }
-        #admin-panel {
-            position: fixed;
-            top: 0;
-            left: -300px;
-            width: 300px;
-            height: 100%;
-            background: white;
-            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
-            padding: 15px;
-            transition: left 0.3s;
-        }
-        #admin-panel.active {
-            left: 0;
-        }
-        #admin-panel input {
-            width: 100%;
-            padding: 10px;
-            margin: 5px 0;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
-        #help-menu {
-            position: fixed;
-            top: 0;
-            right: -300px;
-            width: 300px;
-            height: 100%;
-            background: white;
-            box-shadow: -2px 0 5px rgba(0,0,0,0.1);
-            padding: 15px;
-            transition: right 0.3s;
-        }
-        #help-menu.active {
-            right: 0;
-        }
-        #help-menu button {
-            margin-top: 10px;
-            background: #e74c3c;
-        }
-    </style>
-</head>
-<body>
-    <header>
-        <button id="menu-btn">☰</button>
-        <h1>Пропуски</h1>
-        <div class="icons">
-            <span>🔔</span>
-            <span>👤</span>
-            <span id="help-btn">❓</span>
-        </div>
-    </header>
-    
-    <main>
-        <section class="requests">
-            <h2>Заявления по ОРВИ</h2>
-            <button id="apply-btn">Подать заявку</button>
-        </section>
-        
-        <section class="missed-hours">
-            <h2>Пропуски по неуважительной причине</h2>
-            <p>Всего за семестр: <span id="total-hours">0</span> ч.</p>
-            <table>
-                <tr>
-                    <th>Февраль</th>
-                    <th>Март</th>
-                    <th>Апрель</th>
-                </tr>
-                <tr>
-                    <td>4 ч.</td>
-                    <td>0 ч.</td>
-                    <td>0 ч.</td>
-                </tr>
-            </table>
-        </section>
-        
-        <section class="documents">
-            <h2>Информация о справках</h2>
-            <div id="docs-list"></div>
-        </section>
-    </main>
-    
-    <footer>
-        <p>© 2025 Университет. Все права защищены.</p>
-    </footer>
-    
-    <div id="admin-panel">
-        <h3>Добавить справку</h3>
-        <input type="text" id="doc-type" placeholder="Тип документа">
-        <input type="date" id="doc-start">
-        <input type="date" id="doc-end">
-        <input type="text" id="doc-notes" placeholder="Примечания">
-        <button id="add-doc">Добавить</button>
-    </div>
-    
-    <div id="help-menu">
-        <h3>Справка</h3>
-        <p>Здесь будет информация о подаче заявлений и использовании системы.</p>
-        <button id="close-help">Закрыть</button>
-    </div>
-    
-    <script>
-        document.getElementById('help-btn').addEventListener('click', function() {
-            document.getElementById('help-menu').classList.add('active');
-        });
-        document.getElementById('close-help').addEventListener('click', function() {
-            document.getElementById('help-menu').classList.remove('active');
-        });
-        
-        document.getElementById('menu-btn').addEventListener('click', function() {
-            document.getElementById('admin-panel').classList.toggle('active');
-        });
+document.addEventListener("DOMContentLoaded", function () {
+    const form = document.getElementById("form");
+    const titleInput = document.getElementById("title");
+    const contentInput = document.getElementById("content");
+    const startDateInput = document.getElementById("start-date");
+    const endDateInput = document.getElementById("end-date");
+    const list = document.getElementById("list");
 
-        document.getElementById('add-doc').addEventListener('click', function() {
-            const type = document.getElementById('doc-type').value;
-            const start = document.getElementById('doc-start').value;
-            const end = document.getElementById('doc-end').value;
-            const notes = document.getElementById('doc-notes').value;
-            
-            if (type && start && end) {
-                const docList = document.getElementById('docs-list');
-                const docEntry = document.createElement('p');
-                docEntry.textContent = `${type}: ${start} - ${end} (${notes})`;
-                docList.appendChild(docEntry);
-            }
+    function loadDocs() {
+        const docs = JSON.parse(localStorage.getItem("docs")) || [];
+        list.innerHTML = "";
+        docs.forEach((doc, index) => {
+            const item = document.createElement("div");
+            item.classList.add("doc-item");
+            item.innerHTML = `<h3>${doc.title}</h3><p>${doc.content}</p><p>Действует с ${doc.startDate} по ${doc.endDate}</p>`;
+            list.appendChild(item);
         });
-    </script>
-</body>
-</html>
+    }
+
+    form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        const docs = JSON.parse(localStorage.getItem("docs")) || [];
+        docs.push({ 
+            title: titleInput.value, 
+            content: contentInput.value, 
+            startDate: startDateInput.value, 
+            endDate: endDateInput.value 
+        });
+        localStorage.setItem("docs", JSON.stringify(docs));
+        titleInput.value = "";
+        contentInput.value = "";
+        startDateInput.value = "";
+        endDateInput.value = "";
+        loadDocs();
+    });
+
+    loadDocs();
+});
+
+// Добавляем стилизацию и адаптацию под мобильные устройства
+document.head.insertAdjacentHTML("beforeend", `
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+        padding: 0;
+        background-color: #f4f4f4;
+    }
+    #form {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    input, textarea, button {
+        padding: 10px;
+        font-size: 16px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+    }
+    button {
+        background: #007BFF;
+        color: white;
+        border: none;
+        cursor: pointer;
+    }
+    button:hover {
+        background: #0056b3;
+    }
+    #list {
+        margin-top: 20px;
+    }
+    .doc-item {
+        background: white;
+        padding: 15px;
+        margin-bottom: 10px;
+        border-radius: 5px;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    }
+    @media (max-width: 600px) {
+        body {
+            margin: 10px;
+        }
+        #form {
+            padding: 15px;
+        }
+        .doc-item {
+            padding: 10px;
+        }
+    }
+</style>
+`);
