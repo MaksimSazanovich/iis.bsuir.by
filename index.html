@@ -78,6 +78,24 @@
             border: 1px solid #ddd;
             border-radius: 5px;
         }
+        #help-menu {
+            position: fixed;
+            top: 0;
+            right: -300px;
+            width: 300px;
+            height: 100%;
+            background: white;
+            box-shadow: -2px 0 5px rgba(0,0,0,0.1);
+            padding: 15px;
+            transition: right 0.3s;
+        }
+        #help-menu.active {
+            right: 0;
+        }
+        #help-menu button {
+            margin-top: 10px;
+            background: #e74c3c;
+        }
     </style>
 </head>
 <body>
@@ -87,6 +105,7 @@
         <div class="icons">
             <span>🔔</span>
             <span>👤</span>
+            <span id="help-btn">❓</span>
         </div>
     </header>
     
@@ -132,6 +151,19 @@
         <button id="add-doc">Добавить</button>
     </div>
     
-    <script src="script.js"></script>
+    <div id="help-menu">
+        <h3>Справка</h3>
+        <p>Здесь будет информация о подаче заявлений и использовании системы.</p>
+        <button id="close-help">Закрыть</button>
+    </div>
+    
+    <script>
+        document.getElementById('help-btn').addEventListener('click', function() {
+            document.getElementById('help-menu').classList.add('active');
+        });
+        document.getElementById('close-help').addEventListener('click', function() {
+            document.getElementById('help-menu').classList.remove('active');
+        });
+    </script>
 </body>
 </html>
