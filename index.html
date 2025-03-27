@@ -172,6 +172,20 @@
         document.getElementById('menu-btn').addEventListener('click', function() {
             document.getElementById('admin-panel').classList.toggle('active');
         });
+
+        document.getElementById('add-doc').addEventListener('click', function() {
+            const type = document.getElementById('doc-type').value;
+            const start = document.getElementById('doc-start').value;
+            const end = document.getElementById('doc-end').value;
+            const notes = document.getElementById('doc-notes').value;
+            
+            if (type && start && end) {
+                const docList = document.getElementById('docs-list');
+                const docEntry = document.createElement('p');
+                docEntry.textContent = `${type}: ${start} - ${end} (${notes})`;
+                docList.appendChild(docEntry);
+            }
+        });
     </script>
 </body>
 </html>
